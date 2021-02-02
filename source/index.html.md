@@ -5,10 +5,6 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - shell
   - python
 
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
-
 includes:
   - errors
 
@@ -31,16 +27,15 @@ curl -u username:password "https://kf.kobotoolbox.org/token/?format=json"
 ```
 
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to replace `username` and `password` with your username and password.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+All requests to the `/api/v2/assets/` endpoints require an authorization header
+with the token obtained above.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
+`Authorization: TOKEN`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>TOKEN</code> with your personal access token.
 </aside>
 
 # Kittens
