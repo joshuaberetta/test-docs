@@ -299,7 +299,7 @@
       </span>
     </a>
     <div class="toc-wrapper">
-      <img src="images/logo-3c7cc922.png" class="logo" alt="" />
+      <img src="images/logo-1ca1929f.png" class="logo" alt="" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
               <a href="#" data-language-name="python">python</a>
@@ -316,16 +316,13 @@
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
           </li>
           <li>
-            <a href="#kittens" class="toc-h1 toc-link" data-title="Kittens">Kittens</a>
+            <a href="#assets" class="toc-h1 toc-link" data-title="Assets">Assets</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-kittens" class="toc-h2 toc-link" data-title="Get All Kittens">Get All Kittens</a>
+                    <a href="#list-assets" class="toc-h2 toc-link" data-title="List assets">List assets</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Get a Specific Kitten">Get a Specific Kitten</a>
-                  </li>
-                  <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Delete a Specific Kitten">Delete a Specific Kitten</a>
+                    <a href="#get-a-specific-asset" class="toc-h2 toc-link" data-title="Get a Specific Asset">Get a Specific Asset</a>
                   </li>
               </ul>
           </li>
@@ -339,117 +336,188 @@
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
 <p>Welcome to the Kobotoolbox API!</p>
+
+<ul>
+<li><a href="https://kobo.humanitarianresponse.info">OCHA</a></li>
+<li><a href="https://kf.kobotoolbox.org">HHI</a></li>
+</ul>
 <h1 id='authentication'>Authentication</h1>
 <blockquote>
 <p>To authorize, use this code:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can get your API token by doing the following:</span>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Within the shell, you can get your API token by doing the following:</span>
 curl <span class="nt">-u</span> username:password <span class="s2">"https://kf.kobotoolbox.org/token/?format=json"</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">requests.auth</span> <span class="kn">import</span> <span class="n">HTTPBasicAuth</span>
+
+<span class="c1"># Ensure you are using the correct kobo server
+</span><span class="n">URL</span> <span class="o">=</span> <span class="s">"https://kf.kobotoolbox.org/token"</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">'format'</span><span class="p">:</span> <span class="s">'json'</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">URL</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">HTTPBasicAuth</span><span class="p">(</span><span class="s">'username'</span><span class="p">,</span> <span class="s">'password'</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span>
+<span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">token</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">'token'</span><span class="p">]</span>
 </code></pre></div>
 <blockquote>
 <p>Make sure to replace <code>username</code> and <code>password</code> with your username and password.</p>
 </blockquote>
 
-<p>All requests to the <code>/api/v2/assets/</code> endpoints require an authorization header
+<p>All requests to <code>/api/v2</code> endpoints require an authorization header
 with the token obtained above.</p>
 
-<p><code>Authorization: TOKEN</code></p>
+<p><code>Authorization: Token TOKEN</code></p>
 
 <aside class="notice">
 You must replace <code>TOKEN</code> with your personal access token.
 </aside>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h1 id='assets'>Assets</h1><h2 id='list-assets'>List assets</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">"my-super-secret-token"</span>
+curl <span class="s2">"https://kf.kobotoolbox.org/api/v2/assets/?format=json"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Authorization: Token </span><span class="nv">$TOKEN</span><span class="s2">"</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="s">'https://kf.kobotoolbox.org/api/v2/assets'</span>
+<span class="n">TOKEN</span> <span class="o">=</span> <span class="s">'my-super-secret-token'</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="p">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="n">kittens</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span> <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">meowmeowmeow</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="kd">get</span><span class="p">();</span>
-</code></pre></div>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre></div>
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/api/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
-</tr>
-<tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
-</tr>
-</tbody></table>
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="p">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="n">kittens</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span> <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">meowmeowmeow</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'Authorization'</span><span class="p">:</span> <span class="sa">f</span><span class="s">'Token </span><span class="si">{</span><span class="n">TOKEN</span><span class="si">}</span><span class="s">'</span><span class="p">}</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">'format'</span><span class="p">:</span> <span class="s">'json'</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="nl">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"next"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"previous"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"results"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://kf.kobotoolbox.org/api/v2/assets/aUNYdrhtbPvL6YijTEhWrB/?format=json"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"date_modified"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-02-03T19:12:20.313279Z"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-02-03T19:12:09.332893Z"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://kf.kobotoolbox.org/api/v2/users/username/?format=json"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"summary"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
+      </span><span class="nl">"owner__username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"username"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"uid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aUNYdrhtbPvL6YijTEhWrB"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"tag_string"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
+      </span><span class="nl">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"asset"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Foo Form"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"asset_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"survey"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"version_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vKcfB9YcP9fZJZzos9haFb"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"has_deployment"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"deployed_version_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vKcfB9YcP9fZJZzos9haFb"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"deployment__identifier"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://kc.kobotoolbox.org/username/forms/aUNYdrhtbPvL6YijTEhWrB"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"deployment__active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"deployment__submission_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"export_settings"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"downloads"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://kf.kobotoolbox.org/api/v2/assets/aUNYdrhtbPvL6YijTEhWrB/data/?format=json"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"subscribers_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shared"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"access_types"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"children"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint retrieves a specific kitten.</p>
+<p>This endpoint retrieves all assets that you have permission to view.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>GET http://kf.kobotoolbox.org/api/v2/assets/</code></p>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>format</td>
+<td>json</td>
+<td>json, xml</td>
+<td>Renders the response to the specified format</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>300</td>
+<td>&lt;30,000</td>
+<td>Limits the number of assets returned</td>
+</tr>
+<tr>
+<td>q</td>
+<td></td>
+<td>refer to xxx</td>
+<td>Filters the returned data based on specified search parameters</td>
+</tr>
+</tbody></table>
+<h2 id='get-a-specific-asset'>Get a Specific Asset</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">"my-super-secret-token"</span>
+curl <span class="s2">"https://kf.kobotoolbox.org/api/v2/assets/aXsfJfSfvJw3gdvs/?format=json"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Authorization: Token </span><span class="nv">$TOKEN</span><span class="s2">"</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s">'https://kf.kobotoolbox.org/api/v2/assets'</span>
+<span class="n">TOKEN</span> <span class="o">=</span> <span class="s">'my-super-secret-token'</span>
+<span class="n">ASSET_UID</span> <span class="o">=</span> <span class="s">'aXsfJfSfvJw3gdvs'</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="sa">f</span><span class="s">'</span><span class="si">{</span><span class="n">BASE_URL</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">ASSET_UID</span><span class="si">}</span><span class="s">'</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'Authorization'</span><span class="p">:</span> <span class="sa">f</span><span class="s">'Token </span><span class="si">{</span><span class="n">TOKEN</span><span class="si">}</span><span class="s">'</span><span class="p">}</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">'format'</span><span class="p">:</span> <span class="s">'json'</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+</code></pre></div>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://kf.kobotoolbox.org/api/v2/assets/aUNYdrhtbPvL6YijTEhWrB/?format=json"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://kf.kobotoolbox.org/api/v2/users/username/?format=json"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"owner__username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"username"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
+  </span><span class="nl">"asset_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"survey"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-02-03T19:12:09.332893Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"summary"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
+  </span><span class="nl">"date_modified"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-02-03T19:12:20.313279Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vKcfB9YcP9fZJZzos9haFb"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version__content_hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e705ab3d43194d4d2c5d84e67727b9cbe82d1af4"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"has_deployment"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"deployed_version_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vKcfB9YcP9fZJZzos9haFb"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"deployed_versions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
+  </span><span class="nl">"deployment__identifier"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://kc.kobotoolbox.org/username/forms/aUNYdrhtbPvL6YijTEhWrB"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"deployment__links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
+  </span><span class="nl">"deployment__active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"deployment__data_download_links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
+  </span><span class="nl">"deployment__submission_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"report_styles"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
+  </span><span class="nl">"report_custom"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="nl">"map_styles"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="nl">"map_custom"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="nl">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
+  </span><span class="err">...</span><span class="w">
+  </span><span class="nl">"assignable_permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w">
+  </span><span class="nl">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w">
+  </span><span class="nl">"export_settings"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w">
+  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://kf.kobotoolbox.org/api/v2/assets/aUNYdrhtbPvL6YijTEhWrB/data/?format=json"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"children"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"subscribers_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shared"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"access_types"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This endpoint retrieves a specific asset.</p>
 <h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
+<p><code>GET http://kf.kobotoolbox.org/api/v2/assets/&lt;asset_uid&gt;/</code></p>
 <h3 id='url-parameters'>URL Parameters</h3>
 <table><thead>
 <tr>
@@ -458,108 +526,39 @@ Remember — a happy kitten is an authenticated kitten!
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>asset_uid</td>
+<td>The <code>uid</code> of the asset to retrieve</td>
 </tr>
 </tbody></table>
-<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="p">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="n">kittens</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span> <span class="se">\</span>
-  <span class="nt">-X</span> DELETE <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">meowmeowmeow</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre></div>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>This endpoint deletes a specific kitten.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
+<h3 id='query-parameters-2'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Default</th>
+<th>Options</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to delete</td>
+<td>format</td>
+<td>json</td>
+<td>json, xml</td>
+<td>Renders the response to the specified format</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>300</td>
+<td>&lt;30,000</td>
+<td>Limits the number of assets returned</td>
+</tr>
+<tr>
+<td>q</td>
+<td></td>
+<td>refer to xxx</td>
+<td>Filters the returned data based on specified search parameters</td>
 </tr>
 </tbody></table>
 <h1 id='errors'>Errors</h1>
-<aside class="notice">
-This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
-</aside>
-
-<p>The Kittn API uses the following error codes:</p>
-
-<table><thead>
-<tr>
-<th>Error Code</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>400</td>
-<td>Bad Request -- Your request is invalid.</td>
-</tr>
-<tr>
-<td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found -- The specified kitten could not be found.</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone -- The kitten requested has been removed from our servers.</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&#39;m a teapot.</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
-</tr>
-</tbody></table>
-
       </div>
       <div class="dark-box">
           <div class="lang-selector">
